@@ -35,7 +35,6 @@ try:
 except:
     logger.error("Error occured while proccessing the Files....")
     
-    
 
 #Active Data
 data_Active = ADB_data[(ADB_data["IsActive"] == True)]
@@ -78,7 +77,7 @@ Cat_L = [{1:['FP','HYD','BF','BFP']},{2:['FA','CO','HD','SD','DS','LSA','MPS','E
 
 def effectivedate(data_Active1):
     try:
-        logger.info("Processing of Original Date,Effective Date started!!!")
+        logger.info("Processing of Original Date,Effective Date columns started!!!")
         list1=['JANUARY','APR','APRIL','AUGUST','DECEMBER','FEBRUARY','JULY','JUNE','MARCH','MAY','NOVEMBER','OCTOBER','SEPTEMBER']
         data_Active1 = data_Active1[(data_Active1['Inspection Month'].str.len() > 0) &(data_Active1['Inspection Month'].isin(list1))]
         data_Active1['Inspection Quote2 #']= pd.to_datetime(data_Active1['Inspection Quote #'], errors='coerce').dt.strftime('%Y-%d-%b')
@@ -91,7 +90,7 @@ def effectivedate(data_Active1):
         data_Active1['Inspection Quote #'] = data_Active1['Inspection Quote #'].str.split('-').str[0]
         data_Active1 = data_Active1[(data_Active1['Inspection Quote #'].str.len() > 0)]
         try:
-            logger.info("Processing of Original Date started!!!")
+            logger.info("Processing of Original Date column started!!!")
             for i in range(0,len(data_Active1)):  
                 if data_Active1['Inspection Quote #'].iloc[i].isnumeric():
                     x.append(data_Active1[['Inspection Quote #','Inspection Month','Inspection Quote_new']].iloc[i])
@@ -107,27 +106,20 @@ def effectivedate(data_Active1):
             df = df['Inspection Month']+'/'+'01'+'/'+df['Inspection Quote #']
             df= pd.to_datetime(df, errors='coerce').dt.strftime('%m/%d/%Y')
             result = df
-            logger.info("processing of Original Dateis successful!!!")
+            logger.info("processing of Original Date column is successful!!!")
         except: 
-            logger.info("Error occured while processing of Original Date started!!!")
+            logger.info("Error occured while processing of Original Date column started!!!")
         
         
         df_date  = pd.to_datetime(result)
-        df_date['yes'] = pd.to_datetime(df_date)
-        df_date['mth'] = df_date['yes'].dt.month
-        df_date['dy'] = df_date['yes'].dt.day
-        df_date['yr'] = df_date['yes'].dt.is_leap_year
-        df_date['mydate']=''
+        df_date['date'] = pd.to_datetime(df_date)
+ 
         try:
             logger.info("Processing of Effective Date started!!!")
             for i in range(0,len(result)):
-                    if ((df_date['mth'].iloc[i]==2) & (df_date['yr'].iloc[i]==True) & (df_date['dy'].iloc[i]==29)):
-                        df_date["yes"].iloc[i] = ((df_date["yes"].iloc[i]) + pd.DateOffset(years=1)+pd.DateOffset(months=1))
-                        print(df_date["yes"].iloc[i])
-                    else:
-                        df_date["yes"].iloc[i] = ((df_date["yes"].iloc[i]) + pd.DateOffset(years=1))
-            df_date["yes"] = pd.to_datetime(df_date["yes"], errors='coerce').dt.strftime('%m/%d/%Y')
-            result1= df_date["yes"]
+                df_date["date"].iloc[i] = "01/01/2021"
+            df_date["date"] = pd.to_datetime(df_date["date"], errors='coerce').dt.strftime('%m/%d/%Y')
+            result1= df_date["date"]
             logger.info("Error occured while processing of Effective Date is successful!!!")
         except:
             logger.info("Processing of Effective Date started!!!")
@@ -136,119 +128,135 @@ def effectivedate(data_Active1):
     except:
         logger.info("Error occured while processing of Original Date, Effective Date started!!!")
         
-        
-        
+
+
 #Acronyms#
 def MapDesc(data_Active):
-    temp = data_Active['Description'].str.split(' ')
-    temp = temp.fillna(0)
-    var = []
-    for i in temp:
-        if i != 0:
-            temp = ''
-            for j in i:
-                cnt = 0
-                for k in j:
-                    if k.isupper():
-                        cnt+=1
-                if cnt > 1:
-                    temp = temp + j + "|"
-            var.append(temp[:-1])
-        else:
-            var.append('')
-    data_Active['desc'] = var
-    data_Active['desc'] = data_Active['desc'].str.replace(',', '')
-    data_Active['desc'] = data_Active['desc'].str.replace(')', '')
-    data_Active['desc'] = data_Active['desc'].str.replace('(', '')
-    data_Active['desc'] = data_Active['desc'].str.replace("'s", '')
-    var = data_Active['desc']
-
-    fnl = []
-    temp2 = []
-    temp1 = ''
-    for i in var:
-        temp2=[]
-        for j in range(0,len(Cat_L)):
-            temp1 = ''
-            for k in Cat_L[j][j+1]:
-                for l in i.split("|"):
-                        if k == l:
-                            temp1 = temp1 + str(l) + ","
-            if temp1 != '':
-                temp2.append(temp1[:-1])
+    try:
+        logger.info("Processing of Customer Descrption is started!!!")
+        temp = data_Active['Description'].str.split(' ')
+        temp = temp.fillna(0)
+        var = []
+        
+        for i in temp:
+            if i != 0:
+                temp = ''
+                for j in i:
+                    cnt = 0
+                    for k in j:
+                        if k.isupper():
+                            cnt+=1
+                    if cnt > 1:
+                        temp = temp + j + "|"
+                var.append(temp[:-1])
             else:
-                temp2.append(1)
-        cnt = 0
-        for n in range(0,len(Cat_L)):
-            if temp2[n] == 1:
-                cnt +=1
-        if cnt != len(Cat_L):
-            fnl.append(temp2)
-        else:
-            fnl.append(0)
+                var.append('')
+        
+        data_Active['desc'] = var
+        data_Active['desc'] = data_Active['desc'].str.replace(',', '')
+        data_Active['desc'] = data_Active['desc'].str.replace(')', '')
+        data_Active['desc'] = data_Active['desc'].str.replace('(', '')
+        data_Active['desc'] = data_Active['desc'].str.replace("'s", '')
+        var = data_Active['desc']
 
-    data_Active['C_list'] = fnl
-    KMP_CL_F= (data_Active
-             .set_index(['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description','Effective Date'])['C_list']
-             .apply(pd.Series)
-             .stack()
-             .reset_index()
-             #.drop('level_4', axis=1)
-             .rename(columns={0:'Desc'}))
-    KMP_CL_F = KMP_CL_F[KMP_CL_F['Desc'] !=1].reset_index()
-    for i in range(0,len(KMP_CL_F['Desc'])):
-        if KMP_CL_F['Desc'][i] == 0:
-            KMP_CL_F['Desc'][i] = KMP_CL_F['Description'][i]
-    KMP_CL_F['Desc'] = KMP_CL_F['Desc'].fillna('NA')
-    KMP_CL_F['Customer'] = KMP_CL_F['Customer'].apply(str)
-    KMP_CL_F['Cus-Desc'] = KMP_CL_F['Customer'] + "-" + KMP_CL_F['Desc']
-    return KMP_CL_F
+        fnl = []
+        temp2 = []
+        temp1 = ''
+        for i in var:
+            temp2=[]
+            for j in range(0,len(Cat_L)):
+                temp1 = ''
+                for k in Cat_L[j][j+1]:
+                    for l in i.split("|"):
+                            if k == l:
+                                temp1 = temp1 + str(l) + ","
+                if temp1 != '':
+                    temp2.append(temp1[:-1])
+                else:
+                    temp2.append(1)
+            cnt = 0
+            for n in range(0,len(Cat_L)):
+                if temp2[n] == 1:
+                    cnt +=1
+            if cnt != len(Cat_L):
+                fnl.append(temp2)
+            else:
+                fnl.append(0)
+
+        data_Active['C_list'] = fnl
+        KMP_CL_F= (data_Active
+                 .set_index(['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description','Effective Date'])['C_list']
+                 .apply(pd.Series)
+                 .stack()
+                 .reset_index()
+                 #.drop('level_4', axis=1)
+                 .rename(columns={0:'Desc'}))
+        KMP_CL_F = KMP_CL_F[KMP_CL_F['Desc'] !=1].reset_index()
+        for i in range(0,len(KMP_CL_F['Desc'])):
+            if KMP_CL_F['Desc'][i] == 0:
+                KMP_CL_F['Desc'][i] = KMP_CL_F['Description'][i]
+        KMP_CL_F['Desc'] = KMP_CL_F['Desc'].fillna('NA')
+        KMP_CL_F['Customer'] = KMP_CL_F['Customer'].apply(str)
+        KMP_CL_F['Cus-Desc'] = KMP_CL_F['Customer'] + "-" + KMP_CL_F['Desc']
+        return KMP_CL_F
+        logger.info("Customer Descrption processing is successful!!!")
+    except:
+        logger.info("error ocured while processing of Customer Descrption is started!!!")
 
 
 #Active Export#
-output = pd.DataFrame(columns=list(Metadata['Output File1']))
-output[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description']] = data_Active[['Inspection Quote #','Inspection Type','Legal Company Name','Price','PO#','Site Address','Fire Protection Equipment']]
-output['Agreement Price'] = output['Agreement Price'].fillna(0)
-DateColumns=list(Metadata['Output File1'])
-VISTA =  pd.read_excel(VISTA_data,sheet_name='Sheet1')
-CT_ED_Dic = dict(zip(VISTA['Name'], VISTA['Customer']))
-output['Customer1'] = Mapping(output,CT_ED_Dic)
-#output['UnMatched']= unMatched(output,CT_ED_Dic)
-output['Customer']=output['Customer1']
-temp = MapDesc(output)
-output1 = pd.DataFrame(columns=list(Metadata['Output File1']))
-output1[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description','Effective Date']] = temp[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Cus-Desc','Effective Date']]
-for i in DateColumns:
-    if str(i).find('Date') != -1:
-        output1[i]= output1[i].fillna('01/01/2020')
-        output1[i]=  pd.to_datetime(output1[i], errors='coerce').dt.strftime('%m/%d/%Y')
-    elif str(i).find('Pricing') != -1:
-        output1[i]=output1['Pricing'].fillna('0')
-output1['Original Date'],output1['Effective Date'] = effectivedate(data_Active)
-output1.to_csv(r'D:\FSP\FPS Client 0211\FPS Client\Project_FIRE-SP\Target\Access\Active_AccessDB.csv', index = False)
-
+try:
+    logger.info("Exporting of Active AccessDB file Started!!")
+    output = pd.DataFrame(columns=list(Metadata['Output File1']))
+    output[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description']] = data_Active[['Inspection Quote #','Inspection Type','Legal Company Name','Price','PO#','Site Address','Fire Protection Equipment']]
+    output['Agreement Price'] = output['Agreement Price'].fillna(0)
+    DateColumns=list(Metadata['Output File1'])
+    VISTA =  pd.read_excel(VISTA_data,sheet_name='Sheet1')
+    CT_ED_Dic = dict(zip(VISTA['Name'], VISTA['Customer']))
+    output['Customer1'] = Mapping(output,CT_ED_Dic)
+    #output['UnMatched']= unMatched(output,CT_ED_Dic)
+    output['Customer']=output['Customer1']
+    temp = MapDesc(output)
+    output1 = pd.DataFrame(columns=list(Metadata['Output File1']))
+    output1[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description','Effective Date']] = temp[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Cus-Desc','Effective Date']]
+    for i in DateColumns:
+        if str(i).find('Date') != -1:
+            output1[i]= output1[i].fillna('01/01/2020')
+            output1[i]=  pd.to_datetime(output1[i], errors='coerce').dt.strftime('%m/%d/%Y')
+        elif str(i).find('Pricing') != -1:
+            output1[i]=output1['Pricing'].fillna('0')
+    output1['Original Date'],output1['Effective Date'] = effectivedate(data_Active)
+    output1.to_csv(r'D:\FSP\FPS Client 0211\FPS Client\Project_FIRE-SP\Target\Access\Active_AccessDB.csv', index = False)
+    logger.info("Exporting of Active AccessDB file is successfull!!")
+except:
+    logger.info("Error while exporting of Active AccessDB file Started!!")
 
 
 #In-Active Data
-output = pd.DataFrame(columns=list(Metadata['Output File1']))
-output[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Service Site','Description']] = data_InActive[['Inspection Quote #','Inspection Type','Legal Company Name','Price','Site Address','Fire Protection Equipment']]
-output['Agreement Price'] = output['Agreement Price'].fillna(0)
-DateColumns=list(Metadata['Output File1'])
- 
-VISTA =  pd.read_excel(VISTA_data,sheet_name='Sheet1')
-CT_ED_Dic = dict(zip(VISTA['Name'], VISTA['Customer']))
-output['Customer1'] = Mapping(output,CT_ED_Dic)
-output['Customer']=output['Customer1']
+try:
+    logger.info("Exporting of Active AccessDB file Started!!")
+    output = pd.DataFrame(columns=list(Metadata['Output File1']))
+    output[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Service Site','Description']] = data_InActive[['Inspection Quote #','Inspection Type','Legal Company Name','Price','Site Address','Fire Protection Equipment']]
+    output['Agreement Price'] = output['Agreement Price'].fillna(0)
+    DateColumns=list(Metadata['Output File1'])
 
-temp = MapDesc(output)
+    VISTA =  pd.read_excel(VISTA_data,sheet_name='Sheet1')
+    CT_ED_Dic = dict(zip(VISTA['Name'], VISTA['Customer']))
+    output['Customer1'] = Mapping(output,CT_ED_Dic)
+    output['Customer']=output['Customer1']
 
-output1 = pd.DataFrame(columns=list(Metadata['Output File1']))
-output1[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description','Effective Date']] = temp[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Cus-Desc','Effective Date']]
-for i in DateColumns:
-    if str(i).find('Date') != -1:
-        output1[i]= output1[i].fillna('01/01/2020')
-        output1[i]=  pd.to_datetime(output1[i], errors='coerce').dt.strftime('%m/%d/%Y')
-    elif str(i).find('Pricing') != -1:
-        output1[i]=output1['Pricing'].fillna('0') 
-output1['Original Date'],output1['Effective Date'] = effectivedate(data_InActive)
-output1.to_csv(r'D:\FSP\FPS Client 0211\FPS Client\Project_FIRE-SP\Target\Access\In_Active_AccessDB.csv', index = False)
+    temp = MapDesc(output)
+
+    output1 = pd.DataFrame(columns=list(Metadata['Output File1']))
+    output1[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description','Effective Date']] = temp[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Cus-Desc','Effective Date']]
+    for i in DateColumns:
+        if str(i).find('Date') != -1:
+            output1[i]= output1[i].fillna('01/01/2020')
+            output1[i]=  pd.to_datetime(output1[i], errors='coerce').dt.strftime('%m/%d/%Y')
+        elif str(i).find('Pricing') != -1:
+            output1[i]=output1['Pricing'].fillna('0') 
+    output1['Original Date'],output1['Effective Date'] = effectivedate(data_InActive)
+    output1.to_csv(r'D:\FSP\FPS Client 0211\FPS Client\Project_FIRE-SP\Target\Access\In_Active_AccessDB.csv', index = False)
+    logger.info("Exporting of Active AccessDB file is successfull!!")
+except:
+    logger.info("Error while exporting of Active AccessDB file Started!!")
