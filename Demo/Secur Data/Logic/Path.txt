@@ -1,0 +1,4 @@
+Src=C:\Users\kameshpavanj\Desktop\Secur Data\Source
+Tgt=C:\Users\kameshpavanj\Desktop\Secur Data\Target
+Log=C:\Users\kameshpavanj\Desktop\Secur Data\Logs
+Metadata=C:\Users\kameshpavanj\Desktop\Secur Data\Logic\Metadata
