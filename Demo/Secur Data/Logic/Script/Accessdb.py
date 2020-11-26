@@ -1,3 +1,9 @@
+
+# coding: utf-8
+
+# In[1]:
+
+
 #Importing Packages
 import pandas as pd
 pd.options.mode.chained_assignment = None
@@ -6,6 +12,10 @@ import os.path
 from time import strptime
 from datetime import datetime, timedelta
 import logging
+
+
+# In[53]:
+
 
 print("\n--> Access DB Process Started")
 # Setting up Path
@@ -77,7 +87,7 @@ def unMatched(df,dic):
 
 #Gobal declaration for category
 Cat_L = [{1:['FP','HYD','BF','BFP']},{2:['FA','CO','HD','SD','DS','LSA','MPS','EOL']},{3:['FE','ELU','FHC','FLCS','EL']}]
-
+Cat_K = {1:"Sprinkler",2:"Fire Alarm",3:"Route"}
 
 
 #Effective date for AccessDB#
@@ -119,21 +129,12 @@ def effectivedate(data_Active1):
         
         
         df_date  = pd.to_datetime(result)
-        df_date['yes'] = pd.to_datetime(df_date)
-        df_date['mth'] = df_date['yes'].dt.month
-        df_date['dy'] = df_date['yes'].dt.day
-        df_date['yr'] = df_date['yes'].dt.is_leap_year
-        df_date['mydate']=''
+        df_date['date'] = pd.to_datetime(df_date)
         try:
             logger.info("Processing of Effective Date started!!!")
-            for i in range(0,len(result)):
-                    if ((df_date['mth'].iloc[i]==2) & (df_date['yr'].iloc[i]==True) & (df_date['dy'].iloc[i]==29)):
-                        df_date["yes"].iloc[i] = ((df_date["yes"].iloc[i]) + pd.DateOffset(years=1)+pd.DateOffset(months=1))
-                        print(df_date["yes"].iloc[i])
-                    else:
-                        df_date["yes"].iloc[i] = ((df_date["yes"].iloc[i]) + pd.DateOffset(years=1))
-            df_date["yes"] = pd.to_datetime(df_date["yes"], errors='coerce').dt.strftime('%m/%d/%Y')
-            result1= df_date["yes"]
+            df_date["date"] = df_date["date"].map(lambda x: x.replace(year=2021))
+            df_date["date"] = pd.to_datetime(df_date["date"], errors='coerce').dt.strftime('%m/%d/%Y')
+            result1= df_date["date"]
             logger.info("Error occured while processing of Effective Date is successful!!!")
         except:
             logger.info("Processing of Effective Date started!!!")
@@ -170,13 +171,18 @@ def MapDesc(data_Active):
     fnl = []
     temp2 = []
     temp1 = ''
+    
     for i in var:
         temp2=[]
         for j in range(0,len(Cat_L)):
             temp1 = ''
             for k in Cat_L[j][j+1]:
+                flag = 0
                 for l in i.split("|"):
-                        if k == l:
+                    if k == l:
+                        if Cat_K[j+1] not in temp1:
+                            temp1 = temp1 + Cat_K[j+1] +"-"+ str(l) + ","
+                        else:
                             temp1 = temp1 + str(l) + ","
             if temp1 != '':
                 temp2.append(temp1[:-1])
@@ -184,16 +190,16 @@ def MapDesc(data_Active):
                 temp2.append(1)
         cnt = 0
         for n in range(0,len(Cat_L)):
-            if temp2[n] == 1:
+            if temp2[n] ==1:
                 cnt +=1
         if cnt != len(Cat_L):
             fnl.append(temp2)
         else:
             fnl.append(0)
-
+    
     data_Active['C_list'] = fnl
     KMP_CL_F= (data_Active
-             .set_index(['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description','Effective Date'])['C_list']
+             .set_index(['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Customer2','Agreement Price','Customer PO','Service Site','Description','Effective Date','Description1'])['C_list']
              .apply(pd.Series)
              .stack()
              .reset_index()
@@ -204,24 +210,33 @@ def MapDesc(data_Active):
         if KMP_CL_F['Desc'][i] == 0:
             KMP_CL_F['Desc'][i] = KMP_CL_F['Description'][i]
     KMP_CL_F['Desc'] = KMP_CL_F['Desc'].fillna('NA')
-    KMP_CL_F['Customer'] = KMP_CL_F['Customer'].apply(str)
-    KMP_CL_F['Cus-Desc'] = KMP_CL_F['Customer'] + "-" + KMP_CL_F['Desc']
+    KMP_CL_F['Description1'] = KMP_CL_F['Desc'].str.split('-').str[1]
+    KMP_CL_F['Customer2'] = KMP_CL_F['Customer2'].apply(str)
+    KMP_CL_F['Cus-Desc'] = KMP_CL_F['Customer2'] + "-" + KMP_CL_F['Desc'].str.split('-').str[0]
     return KMP_CL_F
+
+
+# In[56]:
 
 
 #Active Export#
 output = pd.DataFrame(columns=list(Metadata['Output File1']))
-output[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description']] = data_Active[['Inspection Quote #','Inspection Type','Legal Company Name','Price','PO#','Site Address','Fire Protection Equipment']]
+output[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site',
+        'Description']] = data_Active[['Inspection Quote #','Inspection Type','Legal Company Name','Price','PO#',
+                                       'Site Address','Fire Protection Equipment']]
 output['Agreement Price'] = output['Agreement Price'].fillna(0)
 DateColumns=list(Metadata['Output File1'])
 VISTA =  pd.read_excel(VISTA_data,sheet_name='Sheet1')
 CT_ED_Dic = dict(zip(VISTA['Name'], VISTA['Customer']))
 output['Customer1'] = Mapping(output,CT_ED_Dic)
-#output['UnMatched']= unMatched(output,CT_ED_Dic)
+output['Customer2']= output['Customer'] 
 output['Customer']=output['Customer1']
 temp = MapDesc(output)
 output1 = pd.DataFrame(columns=list(Metadata['Output File1']))
-output1[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description','Effective Date']] = temp[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Cus-Desc','Effective Date']]
+output1[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site',
+         'Description','Effective Date','Description1']] = temp[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer',
+                                                  'Agreement Price','Customer PO','Service Site','Cus-Desc','Effective Date',
+                                                                'Description1']]
 for i in DateColumns:
     if str(i).find('Date') != -1:
         output1[i]= output1[i].fillna('01/01/2020')
@@ -232,23 +247,25 @@ output1['Original Date'],output1['Effective Date'] = effectivedate(data_Active)
 output1.to_csv(r''+myPath['Tgt']+"\Accessdb\Active_AccessDB.csv", index = False)
 print("\n--> AccessDB Active File Generation Completed")
 
-
-
 #In-Active Data
 output = pd.DataFrame(columns=list(Metadata['Output File1']))
-output[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Service Site','Description']] = data_InActive[['Inspection Quote #','Inspection Type','Legal Company Name','Price','Site Address','Fire Protection Equipment']]
+output[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Service Site',
+        'Description']] = data_InActive[['Inspection Quote #','Inspection Type','Legal Company Name','Price',
+                                         'Site Address','Fire Protection Equipment']]
 output['Agreement Price'] = output['Agreement Price'].fillna(0)
 DateColumns=list(Metadata['Output File1'])
  
 VISTA =  pd.read_excel(VISTA_data,sheet_name='Sheet1')
 CT_ED_Dic = dict(zip(VISTA['Name'], VISTA['Customer']))
 output['Customer1'] = Mapping(output,CT_ED_Dic)
+output['Customer2']= output['Customer']
 output['Customer']=output['Customer1']
-
 temp = MapDesc(output)
-
 output1 = pd.DataFrame(columns=list(Metadata['Output File1']))
-output1[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Description','Effective Date']] = temp[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site','Cus-Desc','Effective Date']]
+output1[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer','Agreement Price','Customer PO','Service Site',
+         'Description','Effective Date','Description1']] = temp[['Alt Agreement','Agreement Type '+'('+'Data Pull)','Customer',
+                                                  'Agreement Price','Customer PO','Service Site','Cus-Desc','Effective Date',
+                                                                'Description1']]
 for i in DateColumns:
     if str(i).find('Date') != -1:
         output1[i]= output1[i].fillna('01/01/2020')
@@ -258,3 +275,4 @@ for i in DateColumns:
 output1['Original Date'],output1['Effective Date'] = effectivedate(data_InActive)
 output1.to_csv(r''+myPath['Tgt']+"\Accessdb\In_Active_AccessDB.csv", index = False)
 print("\n--> AccessDB In_Active File Generation Completed\n")
+
