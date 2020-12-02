@@ -156,7 +156,7 @@ try:
     logger.info("Exporting of KMP Active NON OCH file Started!!")
     KMP_CL = pd.read_excel(KMP_data, sheet_name='Contract Lines')
     KMP_CL['Address2'] = KMP_CL['Address2'].str.replace("BUILDING CODE:| ", '')
-    KMP_CL = KMP_CL[(KMP_CL['ContractStatus'] != 'IN')&(KMP_CL['CustomerName'] !='OTTAWA COMMUNITY HOUSING')]
+    KMP_CL = KMP_CL[(KMP_CL['ContractStatus'] != 'IN')&(KMP_CL['CustomerName'] !='OTTAWA COMMUNITY HOUSING')&~(KMP_CL['CustomerName'].isin(ignore_list))]
     KMP_CT = pd.read_excel(KMP_data, sheet_name='Contracts')
     Vista =  pd.read_excel(VISTA_data,sheet_name='Sheet1')
     output = KMP_Mapping(KMP_CL,Metadata,Vista,KMP_CT)
@@ -175,8 +175,7 @@ try:
     logger.info("Exporting of KMP Active OCH file Started!!")
     KMP_CL = pd.read_excel(KMP_data, sheet_name='Contract Lines')
     KMP_CL['Address2'] = KMP_CL['Address2'].str.replace("BUILDING CODE:| ", '')
-    KMP_CL = KMP_CL[(KMP_CL['ContractStatus'] != 'IN')&(KMP_CL['CustomerName'] =='OTTAWA COMMUNITY HOUSING')&(KMP_CL['ContractNumber']!='NON-CONTRACT')&~(KMP_CL['CustomerName'].isin(ignore_list))]
-
+    KMP_CL = KMP_CL[(KMP_CL['ContractStatus'] != 'IN')&(KMP_CL['CustomerName'] =='OTTAWA COMMUNITY HOUSING')&(KMP_CL['ContractNumber']!='NON-CONTRACT')]
     KMP_CT = pd.read_excel(KMP_data, sheet_name='Contracts')
     Vista =  pd.read_excel(VISTA_data,sheet_name='Sheet1')
     output = KMP_Mapping(KMP_CL,Metadata,Vista,KMP_CT)

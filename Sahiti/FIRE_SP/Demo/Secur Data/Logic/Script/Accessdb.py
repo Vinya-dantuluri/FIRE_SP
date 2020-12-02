@@ -88,12 +88,6 @@ Cat_K = {1:"Sprinkler",2:"Fire Alarm",3:"Route",4:"Monitoring"}
 def effectivedate(data_Active1):
     try:
         logger.info("Processing of Effective date1 Started!!!!!!")
-    
-        list1=['JULY/AUGUST','NOVEMBER/DECEMBER']
-        list2=['JANUARY','APRIL','AUGUST','DECEMBER','FEBRUARY','JULY','JUNE','MARCH','MAY','NOVEMBER','OCTOBER','SEPTEMBER']
-        list3=['ANNUAL','MONTHLY','BI-MONTHLY','QUARTELY','WEEKLY','MONTHLY & MONITORING','MONTHLY QI ONLY','MONTHLY/QTLY','MONTHLY/QI','MONTHLY/WKLY']
-        list4=['Tender OCHRFQ17-001','Tender EJ196-190631','Tender EJ196-19063','BS Project P1239','Project #1208']
-        list5=['Tender-16-1257','Tender-19-1139','Tender-19-1140','AllardQ-2018','Q1535-1541Main2019']
         data_Active1 = data_Active1[(data_Active1['Inspection Month'].str.len() > 0) & ~(data_Active1['Inspection Month'].isin(list1))]
         data_Active1 = data_Active1[~(data_Active1['Inspection Quote #'].isin(list4))]
         data_Active1['Inspection Quote2 #']= pd.to_datetime(data_Active1['Inspection Quote #'], errors='coerce').dt.strftime('%Y-%d-%b')
