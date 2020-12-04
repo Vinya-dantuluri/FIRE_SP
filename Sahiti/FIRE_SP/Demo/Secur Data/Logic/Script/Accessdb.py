@@ -27,12 +27,14 @@ else:
 try:
     logger.info("File are Processing.....")
     #Access DB Importing Data
-    ADB_data = pd.read_csv(ADB_data,encoding='latin1')
+    ADB_data = pd.read_excel(ADB_data)
     print("\n--> Source file contains",len(ADB_data),"records")
     #Metadata
     Metadata = pd.read_excel(Metadata)
     #Vista
     VISTA_data=pd.ExcelFile(VISTA_data)
+	#category file#
+    FnR = pd.read_csv(FnR)
     logger.info("All the files Processed...")
     print("\n--> Source File Uploaded")
 except:
@@ -88,6 +90,11 @@ Cat_K = {1:"Sprinkler",2:"Fire Alarm",3:"Route",4:"Monitoring"}
 def effectivedate(data_Active1):
     try:
         logger.info("Processing of Effective date1 Started!!!!!!")
+        list1=['JULY/AUGUST','NOVEMBER/DECEMBER']
+        list2=['JANUARY','APRIL','AUGUST','DECEMBER','FEBRUARY','JULY','JUNE','MARCH','MAY','NOVEMBER','OCTOBER','SEPTEMBER']
+        list3=['ANNUAL','MONTHLY','BI-MONTHLY','QUARTELY','WEEKLY','MONTHLY & MONITORING','MONTHLY QI ONLY','MONTHLY/QTLY','MONTHLY/QI','MONTHLY/WKLY']
+        list4=['Tender OCHRFQ17-001','Tender EJ196-190631','Tender EJ196-19063','BS Project P1239','Project #1208']
+        list5=['Tender-16-1257','Tender-19-1139','Tender-19-1140','AllardQ-2018','Q1535-1541Main2019']
         data_Active1 = data_Active1[(data_Active1['Inspection Month'].str.len() > 0) & ~(data_Active1['Inspection Month'].isin(list1))]
         data_Active1 = data_Active1[~(data_Active1['Inspection Quote #'].isin(list4))]
         data_Active1['Inspection Quote2 #']= pd.to_datetime(data_Active1['Inspection Quote #'], errors='coerce').dt.strftime('%Y-%d-%b')
@@ -201,77 +208,13 @@ def MapDesc(data_Active):
 	
 #Data cleaning#
 def dataClean(df):
+    var = []
     df['DescriptionNew'] = df['Description']
-    df['Description'] = df['Description'].str.replace(',','')
-    df['Description'] = df['Description'].str.replace(')','')
-    df['Description'] = df['Description'].str.replace('(','')
-    df['Description'] = df['Description'].str.replace("'s",'')
-    df['Description'] = df['Description'].str.replace("'",'')
-    df['Description'] = df['Description'].str.replace("$",'')
-    df['Description'] = df['Description'].str.replace("-",' ')
-    df['Description'] = df['Description'].str.replace('"',' ')
-    df['Description'] = df['Description'].str.replace('F/A','FA')
-    df['Description'] = df['Description'].str.replace('E/L','EL')
-    df['Description'] = df['Description'].str.replace('ELU','EL')
-    df['Description'] = df['Description'].str.replace('.','')
-    df['Description'] = df['Description'].str.replace('h','H')
-    df['Description'] = df['Description'].str.replace(';','')
-    df['Description'] = df['Description'].str.replace('F/E','FE')
-    df['Description'] = df['Description'].str.replace('Backflow','BF')
-    df['Description'] = df['Description'].str.replace('BFP','BF')
-    df['Description'] = df['Description'].str.replace('?','')
-    df['Description'] = df['Description'].str.replace('Boosters','BOOSTER')
-    df['Description'] = df['Description'].str.replace('Booster','BOOSTER')
-    df['Description'] = df['Description'].str.replace('Burglary','BURGULAR')
-    df['Description'] = df['Description'].str.replace('Burglar','BURGULAR')
-    df['Description'] = df['Description'].str.replace('Burgular','BURGULAR')
-    df['Description'] = df['Description'].str.replace('Exts','EXT')
-    df['Description'] = df['Description'].str.replace('ExtinguisHing','EXT')
-    df['Description'] = df['Description'].str.replace('Equipment','EQUIPMENT')
-    df['Description'] = df['Description'].str.replace('equipment','EQUIPMENT')
-    df['Description'] = df['Description'].str.replace('Equipment','EQUIPMENT')
-    df['Description'] = df['Description'].str.replace('FEs','FE')
-    df['Description'] = df['Description'].str.replace('Fes','FE')
-    df['Description'] = df['Description'].str.replace('Fe','FE')
-    
-    df['Description'] = df['Description'].str.replace('FPFT','FP')
-    df['Description'] = df['Description'].str.replace('FPT','FP')
-
-    df['Description'] = df['Description'].str.replace('Hydrants','HYD')
-    df['Description'] = df['Description'].str.replace('Hydrant','HYD')
-    df['Description'] = df['Description'].str.replace('HYDRANTS','HYD')
-    df['Description'] = df['Description'].str.replace('Hdr','HYD')
-    df['Description'] = df['Description'].str.replace('Hydr','HYD')
-    df['Description'] = df['Description'].str.replace('HYDs','HYD')
-    df['Description'] = df['Description'].str.replace('Hydants','HYD')
-    df['Description'] = df['Description'].str.replace('Hydant','HYD')
-    df['Description'] = df['Description'].str.replace('Hyds','HYD')
-    df['Description'] = df['Description'].str.replace('Hyd','HYD')
-
-    df['Description'] = df['Description'].str.replace('Stdpipe','STANDPIPE')
-    df['Description'] = df['Description'].str.replace('Standpipe','STANDPIPE')
-
-    df['Description'] = df['Description'].str.replace('Sprinkler','SPR')
-    df['Description'] = df['Description'].str.replace('Sprklr','SPR')
-    df['Description'] = df['Description'].str.replace('SPR','SPR')
-    df['Description'] = df['Description'].str.replace('spr','SPR')
-    df['Description'] = df['Description'].str.replace('Spr','SPR')
-    
-    df['Description'] = df['Description'].str.replace('Wet','WET')
-    df['Description'] = df['Description'].str.replace('Dry','DRY')
-
-    df['Description'] = df['Description'].str.replace('glycol','GLYCOL')
-    df['Description'] = df['Description'].str.replace('Glycol','GLYCOL')
-    df['Description'] = df['Description'].str.replace('Intrusion','INTRUSION')
-    df['Description'] = df['Description'].str.replace('Elevator','ELEVATOR')
-    df['Description'] = df['Description'].str.replace('Elevators','ELEVATOR')
-    
-    df['Description'] = df['Description'].str.replace('Preaction','PREACTION')
-    
-    df['Description'] = df['Description'].str.replace('Voice','VOICE')
-    
-    df['Description'] = df['Description'].str.replace('Curb boxes','CURB_BOX')
-    df['Description'] = df['Description'].str.replace('Curb box','CURB_BOX')
+    for i in df['Description']:
+        var.append((re.sub(r'[^a-zA-Z| ]',r'',str(i))).strip())
+    df['Description'] = var
+    for i in range(0,len(FnR)):
+        df['Description'] = df['Description'].str.replace(FnR['Find'][i],FnR['Replace'][i])
     return df['Description']
     
 

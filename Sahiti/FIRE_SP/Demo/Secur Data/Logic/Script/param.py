@@ -1,4 +1,4 @@
-ADB_data = r'D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Source\Access DB Secure.csv'
+ADB_data = r'D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Source\Secur Export - 2020 12 03.xlsx'
 KMP_data = r'D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Source\KMP Data.xlsx'
 Metadata = r'D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Logic\Metadata\Output.xlsx'
 VISTA_data=r'D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Logic\Metadata\vistafile.xlsx'
@@ -11,9 +11,5 @@ KMP_InActive=r'D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Target\KMP\KMP_InAct
 ignorelist=r'D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Target\KMP\ignore_list.csv'
 ActiveAccess=r'D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Target\Accessdb\Active_AccessDB.csv'
 InactiveAccess=r'D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Target\Accessdb\In_Active_AccessDB.csv'
-list1=['JULY/AUGUST','NOVEMBER/DECEMBER']
-list2=['JANUARY','APRIL','AUGUST','DECEMBER','FEBRUARY','JULY','JUNE','MARCH','MAY','NOVEMBER','OCTOBER','SEPTEMBER']
-list3=['ANNUAL','MONTHLY','BI-MONTHLY','QUARTELY','WEEKLY','MONTHLY & MONITORING','MONTHLY QI ONLY','MONTHLY/QTLY','MONTHLY/QI','MONTHLY/WKLY']
-list4=['Tender OCHRFQ17-001','Tender EJ196-190631','Tender EJ196-19063','BS Project P1239','Project #1208']
-list5=['Tender-16-1257','Tender-19-1139','Tender-19-1140','AllardQ-2018','Q1535-1541Main2019']
+FnR= r'D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Logic\Metadata\FnR.csv'
 #path = r"D:\FSP_GITHUB\Sahiti\FIRE_SP\Demo\Secur Data\Logs\Accessdb"
