@@ -1,15 +1,19 @@
-ADB_data = r'C:\Users\kameshpavanj\Desktop\Secur Data\Source\Secur Export - 2020 12 03.xlsx'
-KMP_data = r'C:\Users\kameshpavanj\Desktop\Secur Data\Source\KMP Data.xlsx'
-Metadata = r'C:\Users\kameshpavanj\Desktop\Secur Data\Logic\Metadata\Output.xlsx'
-VISTA_data=r'C:\Users\kameshpavanj\Desktop\Secur Data\Logic\Metadata\vistafile.xlsx'
-KMPLog=r'C:\Users\kameshpavanj\Desktop\Secur Data\Logs\KMP\info.log'
-AcessLog=r'C:\Users\kameshpavanj\Desktop\Secur Data\Logs\Accessdb\info.log'
-ignore_list=r'C:\Users\kameshpavanj\Desktop\Secur Data\Source\ignorelist.xlsx'
-KMP_NON_OCH=r'C:\Users\kameshpavanj\Desktop\Secur Data\Target\KMP\KMP_NON_OCH.csv'
-KMP_OCH=r'C:\Users\kameshpavanj\Desktop\Secur Data\Target\KMP\KMP_OCH.csv'
-KMP_InActive=r'C:\Users\kameshpavanj\Desktop\Secur Data\Target\KMP\KMP_InActive.csv'
-ignorelist=r'C:\Users\kameshpavanj\Desktop\Secur Data\Target\KMP\ignore_list.csv'
-ActiveAccess=r'C:\Users\kameshpavanj\Desktop\Secur Data\Target\Accessdb\Active_AccessDB.csv'
-InactiveAccess=r'C:\Users\kameshpavanj\Desktop\Secur Data\Target\Accessdb\In_Active_AccessDB.csv'
-FnR= r'C:\Users\kameshpavanj\Desktop\Secur Data\Logic\Metadata\FnR.csv'
-#path = r"C:\Users\kameshpavanj\Desktop\Secur Data\Logs\Accessdb"
+basepath = r"C:\Users\kameshpavanj\Desktop\Secur Data\\"
+
+ADB_data = basepath+'Source\Secur Export - 2020 12 03.xlsx'
+KMP_data = basepath+'Source\KMP Data.xlsx'
+
+Metadata = basepath+'Logic\Metadata\Output.xlsx'
+VISTA_data = basepath+'Logic\Metadata\VistaFile.xlsx'
+ignore_list = basepath+'Source\ignorelist.xlsx'
+FnR = basepath+'Logic\Metadata\FnR.csv'
+
+KMPLog = basepath+'Logs\KMP\info.log'
+AcessLog = basepath+'Logs\Accessdb\info.log'
+
+KMP_NON_OCH = basepath+'Target\KMP\A_KMP_NON_OCH.csv'
+KMP_OCH = basepath+'Target\KMP\A_KMP_OCH.csv'
+KMP_InActive = basepath+'Target\KMP\IA_KMP.csv'
+ignorelist = basepath+'Target\KMP\IA_ignore_list.csv'
+ActiveAccess = basepath+'Target\Accessdb\A_AccessDB.csv'
+InactiveAccess = basepath+'Target\Accessdb\IA_AccessDB.csv'
