@@ -84,7 +84,6 @@ try:
             DateColumns=list(Metadata['Output File1'])
             for i in DateColumns:
                 if str(i).find('Date') != -1:
-                    print(str(i))
                     output[i]= output[i].fillna('01/' +'01/'+ '2021')
                     output[i]=  pd.to_datetime(output[i], errors='coerce').dt.strftime('%m/%d/%Y')
                 elif str(i).find('Pricing') != -1:
