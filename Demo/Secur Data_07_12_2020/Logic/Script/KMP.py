@@ -77,7 +77,7 @@ try:
             x=KMP_CL.rename(columns={'CustomerName_y': 'CustomerName'})
             output = pd.DataFrame(columns=list(Metadata['Output File1']))
             output['Description']=x['ContractDescription']+"-"+x['CustomerName']
-            output[['Alt Agreement','Agreement Type (For Entry)','Agreement Type (Data Pull)','Customer','Service Site','Original Date']] = x[['ContractNumber','Alt','Address2','CustomerName','Address1','ContractStart']]
+            output[['Alt Agreement','Agreement Type (For Entry)','Agreement Type (Data Pull)','Customer','Service Site','Original Date']] = x[['ContractNumber','Address2','Alt','CustomerName','Address1','ContractStart']]
             output['Expiration Date']='01/01/2022'
             output['Effective Date']=output['Original Date']
             output['Effective Date']=output['Effective Date'].map(lambda x: x.replace(year=2021))

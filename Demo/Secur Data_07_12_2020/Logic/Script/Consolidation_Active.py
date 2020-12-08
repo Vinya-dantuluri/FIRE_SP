@@ -15,4 +15,4 @@ for folder in set_folder:
         if file.split("_")[0] =='A':
             Active_con.append(pd.read_csv(set_file+"/"+file))
 df = pd.concat(Active_con, axis=0, sort=False)
-df.to_csv(ConPath+"/"+"A_KMP_AccessDB.csv", index=False)
+df.to_csv(ConPath+"/"+"Active_KMP_AccessDB.csv", index=False)

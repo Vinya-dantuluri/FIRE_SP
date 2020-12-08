@@ -189,6 +189,7 @@ try:
                 fnl.append(0)
                 
         data_Active['descNew'] = fnl
+        #data_Active.to_csv(r"C:\Users\kameshpavanj\Desktop\Secur Data\TestDesc.csv")
         #data_Active[['Description','descNew','Alt Agreement','Customer2']].to_csv(str(letter)+"_Mapping.csv")
         data_Active['C_list'] = fnl
         KMP_CL_F= (data_Active
@@ -198,6 +199,7 @@ try:
                 .reset_index()
                 #.drop('level_4', axis=1)
                 .rename(columns={0:'Desc'}))
+        KMP_CL_F.to_csv(r"C:\Users\kameshpavanj\Desktop\Secur Data\TestDesc1.csv")
         KMP_CL_F = KMP_CL_F[KMP_CL_F['Desc'] !=1].reset_index()
         for i in range(0,len(KMP_CL_F['Desc'])):
             if KMP_CL_F['Desc'][i] == 0:
