@@ -1,0 +1,26 @@
+2020-11-25 11:45:08,222 File are Processing.....
+2020-11-25 11:45:16,154 All the files Processed...
+2020-11-25 11:45:16,154 Exporting of KMP Active NON OCH file Started!!
+2020-11-25 11:45:16,208 Processing of KMP_OCH and Non_OCH data started!!!
+2020-11-25 11:45:16,245 NumExpr defaulting to 8 threads.
+2020-11-25 11:45:16,256 Processing of Alt Agrrement and Date1 columns started!!!
+2020-11-25 11:45:16,422 Processing of Description,Pricing to 0 columns  started!!!
+2020-11-25 11:45:16,611 Reading vista file for matching Customer code with KMP File Started!!
+2020-11-25 11:45:16,624 Successfully matched Customer code in InActive AceesDB file
+2020-11-25 11:45:16,624 Succesfully Processed Alt Agrrement and Date1 columns!!!
+2020-11-25 11:45:16,677  Succesfully Exported KMP Active NON OCH file Started!!
+2020-11-25 11:45:16,677 Exporting of KMP Active OCH file Started!!
+2020-11-25 11:45:16,726 Processing of KMP_OCH and Non_OCH data started!!!
+2020-11-25 11:45:16,737 Processing of Alt Agrrement and Date1 columns started!!!
+2020-11-25 11:45:16,867 Processing of Description,Pricing to 0 columns  started!!!
+2020-11-25 11:45:17,059 Reading vista file for matching Customer code with KMP File Started!!
+2020-11-25 11:45:17,070 Successfully matched Customer code in InActive AceesDB file
+2020-11-25 11:45:17,070 Succesfully Processed Alt Agrrement and Date1 columns!!!
+2020-11-25 11:45:17,104 Succesfully Exported KMP Active OCH file Started!!
+2020-11-25 11:45:17,105 Exporting of KMP InActive OCH file Started!!
+2020-11-25 11:45:17,158 Processing of KMP_OCH and Non_OCH data started!!!
+2020-11-25 11:45:17,173 Processing of Alt Agrrement and Date1 columns started!!!
+2020-11-25 11:45:17,265 Processing of Description,Pricing to 0 columns  started!!!
+2020-11-25 11:45:17,338 Reading vista file for matching Customer code with KMP File Started!!
+2020-11-25 11:45:17,343 Successfully matched Customer code in InActive AceesDB file
+2020-11-25 11:45:17,344 Succesfully Processed Alt Agrrement and Date1 columns!!!

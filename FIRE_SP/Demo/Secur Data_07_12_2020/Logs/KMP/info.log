@@ -1,0 +1,31 @@
+2020-12-08 18:06:46,298 File are Processing.....
+2020-12-08 18:07:45,727 All the files Processed...
+2020-12-08 18:07:47,787 Exporting of KMP Active NON OCH file Started!!
+2020-12-08 18:07:47,886 Processing of KMP_OCH and Non_OCH data started!!!
+2020-12-08 18:07:47,935 Processing of Alt Agrrement and Date1 columns started!!!
+2020-12-08 18:07:48,328 Processing of Description,Pricing to 0 columns  started!!!
+2020-12-08 18:07:49,033 Reading vista file for matching Customer code with KMP File Started!!
+2020-12-08 18:07:49,042 Successfully matched Customer code in InActive AceesDB file
+2020-12-08 18:07:49,043 Successfully Processed Alt Agreement and Date1 columns!!!
+2020-12-08 18:07:51,154  Successfully Exported KMP Active NON OCH file Started!!
+2020-12-08 18:07:53,158 Exporting of KMP Active OCH file Started!!
+2020-12-08 18:07:53,257 Processing of KMP_OCH and Non_OCH data started!!!
+2020-12-08 18:07:53,290 Processing of Alt Agrrement and Date1 columns started!!!
+2020-12-08 18:07:53,663 Processing of Description,Pricing to 0 columns  started!!!
+2020-12-08 18:07:54,395 Reading vista file for matching Customer code with KMP File Started!!
+2020-12-08 18:07:54,431 Successfully matched Customer code in InActive AceesDB file
+2020-12-08 18:07:54,432 Successfully Processed Alt Agreement and Date1 columns!!!
+2020-12-08 18:07:56,543 Succesfully Exported KMP Active OCH file Started!!
+2020-12-08 18:07:58,573 Exporting of KMP InActive OCH file Started!!
+2020-12-08 18:07:58,672 Processing of KMP_OCH and Non_OCH data started!!!
+2020-12-08 18:07:58,731 Processing of Alt Agrrement and Date1 columns started!!!
+2020-12-08 18:07:59,059 Processing of Description,Pricing to 0 columns  started!!!
+2020-12-08 18:07:59,314 Reading vista file for matching Customer code with KMP File Started!!
+2020-12-08 18:07:59,319 Successfully matched Customer code in InActive AceesDB file
+2020-12-08 18:07:59,320 Successfully Processed Alt Agreement and Date1 columns!!!
+2020-12-08 18:07:59,322 Processing of KMP_OCH and Non_OCH data started!!!
+2020-12-08 18:07:59,349 Processing of Alt Agrrement and Date1 columns started!!!
+2020-12-08 18:07:59,499 Processing of Description,Pricing to 0 columns  started!!!
+2020-12-08 18:07:59,864 Reading vista file for matching Customer code with KMP File Started!!
+2020-12-08 18:07:59,870 Successfully matched Customer code in InActive AceesDB file
+2020-12-08 18:07:59,870 Successfully Processed Alt Agreement and Date1 columns!!!
